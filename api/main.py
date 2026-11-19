@@ -5,20 +5,23 @@ from supertokens_python import get_all_cors_headers
 from supertokens_python.framework.fastapi import get_middleware
 
 from starlette.responses import RedirectResponse
-from api.routes import auth
+from api import config
+from api.routes import auth, users
 from api.routes.debug import protected
 
-app = FastAPI()
+app = FastAPI(title="STAKED API")
 app.include_router(auth.router)
+app.include_router(users.router)
 app.include_router(protected.router)
 
 app.add_middleware(get_middleware())
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=config.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["Content-Type"] + get_all_cors_headers(),
+    expose_headers=get_all_cors_headers(),
 )
 
 @app.get("/")
