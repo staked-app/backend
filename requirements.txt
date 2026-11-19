@@ -1,0 +1,3 @@
+supertokens-python==0.31.3
+fastapi
+uvicorn
